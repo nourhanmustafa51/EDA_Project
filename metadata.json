@@ -1,0 +1,8 @@
+{
+  "name": "Automated EDA & Data Cleaning Pipeline",
+  "description": "Statistical data cleaning, automated exploratory data analysis (EDA), interactive charts, and publication-ready audit reports.",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
