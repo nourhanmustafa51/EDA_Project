@@ -1,0 +1,11 @@
+pandas
+numpy
+matplotlib
+seaborn
+openpyxl
+reportlab
+python-dotenv
+watchdog
+fastapi
+uvicorn
+python-multipart
