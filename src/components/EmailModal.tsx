@@ -9,8 +9,8 @@ interface EmailModalProps {
 }
 
 export const EmailModal: React.FC<EmailModalProps> = ({ isOpen, onClose, log }) => {
-  const [sender, setSender] = useState('nourrmustafa5@gmail.com');
-  const [recipients, setRecipients] = useState('nourrmustafa5@gmail.com, analytics-team@company.org');
+  const [sender, setSender] = useState('');
+  const [recipients, setRecipients] = useState('');
   const [smtpHost, setSmtpHost] = useState('smtp.gmail.com');
   const [smtpPort, setSmtpPort] = useState('587');
   const [isSending, setIsSending] = useState(false);
@@ -117,6 +117,7 @@ export const EmailModal: React.FC<EmailModalProps> = ({ isOpen, onClose, log }) 
               </label>
               <input
                 type="email"
+                placeholder="your.email@gmail.com"
                 value={sender}
                 onChange={(e) => setSender(e.target.value)}
                 className="w-full rounded-md border border-slate-300 px-2.5 py-1.5 text-xs text-slate-800 focus:outline-none focus:ring-1 focus:ring-blue-500"
@@ -130,6 +131,7 @@ export const EmailModal: React.FC<EmailModalProps> = ({ isOpen, onClose, log }) 
             </label>
             <input
               type="text"
+              placeholder="recipient1@example.com, recipient2@example.com"
               value={recipients}
               onChange={(e) => setRecipients(e.target.value)}
               className="w-full rounded-md border border-slate-300 px-2.5 py-1.5 text-xs text-slate-800 focus:outline-none focus:ring-1 focus:ring-blue-500"

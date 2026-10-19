@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Papa from 'papaparse';
 import { Header } from './components/Header';
 import { PipelineSteps } from './components/PipelineSteps';
@@ -11,15 +11,14 @@ import { EmailModal } from './components/EmailModal';
 import { PipelineResult } from './types/pipeline';
 import { cleanData } from './utils/cleaner';
 import { runEDA } from './utils/eda';
-import { SAMPLE_DATASETS } from './utils/sampleData';
 
 export function App() {
   const [result, setResult] = useState<PipelineResult | null>(null);
-  const [activeTab, setActiveTab] = useState<string>('report');
+  const [activeTab, setActiveTab] = useState<string>('upload');
   const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
 
-  // Initialize pipeline with default Titanic dataset
+  // Process user-provided dataset
   const processDataset = (data: Record<string, any>[], filename: string) => {
     setIsProcessing(true);
     try {
@@ -42,18 +41,13 @@ export function App() {
         log,
         eda,
       });
+      setActiveTab('report');
     } catch (err) {
       console.error('Error running pipeline:', err);
     } finally {
       setIsProcessing(false);
     }
   };
-
-  useEffect(() => {
-    // Load default Titanic dataset on first mount
-    const defaultDataset = SAMPLE_DATASETS[0];
-    processDataset(defaultDataset.data, defaultDataset.filename);
-  }, []);
 
   const handleDownloadCSV = () => {
     if (!result) return;
@@ -95,6 +89,7 @@ export function App() {
           onDownloadCSV={handleDownloadCSV}
           onDownloadJSON={handleDownloadJSON}
           onOpenEmail={() => setIsEmailModalOpen(true)}
+          onOpenUpload={() => setActiveTab('upload')}
           activeTab={activeTab}
           setActiveTab={setActiveTab}
         />
@@ -119,12 +114,20 @@ export function App() {
           </div>
         ) : (
           <>
-            {activeTab === 'upload' && (
-              <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+            {(!result || activeTab === 'upload') && (
+              <div className="bg-white p-6 sm:p-8 rounded-xl border border-slate-200 shadow-sm space-y-4">
+                <div>
+                  <h2 className="text-lg font-bold text-slate-900">
+                    Upload Your Dataset
+                  </h2>
+                  <p className="text-xs text-slate-500">
+                    Select a CSV or Excel spreadsheet to run the automated cleaning pipeline and generate your EDA report.
+                  </p>
+                </div>
+
                 <DatasetUpload
                   onLoadDataset={(data, filename) => {
                     processDataset(data, filename);
-                    setActiveTab('report');
                   }}
                   currentFilename={result?.fileName}
                 />
